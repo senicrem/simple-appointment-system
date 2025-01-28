@@ -26,15 +26,13 @@
     <div class="grid grid-cols-7 h-[calc(100vh-125px)]">
         @foreach($calendatDateMatrix as $dates)
         @if(!is_null($dates) && $dates['full_date'] === $dateNow)
-                <div class="flex items-center justify-center w-full h-full">
-                    <span class="bg-blue-700 text-white w-10 h-10 flex items-center justify-center rounded-full">
-                        {{ $dates['day'] }}
-                    </span>
+                <div class="flex justify-end border-1 p-2 border-gray-100 text-lg bg-green-100">
+                    <span>{{ $dates['day'] }}</span>
                 </div>
             @elseif (is_null($dates))
-                <div class="flex items-center justify-center w-full h-full"></div>
+                <div class="flex justify-end"></div>
             @else
-                <div class="flex items-center justify-center w-full h-full">{{ $dates['day'] }}</div>
+                <div class="flex justify-end border-1 p-2 border-gray-100 text-lg">{{ $dates['day'] }}</div>
             @endif
         @endforeach
     </div>
