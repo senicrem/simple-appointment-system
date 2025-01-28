@@ -83,8 +83,10 @@ class CustomCalendar extends Component
 
         if ($newSelectedMonthValue === 0) {
             $newSelectedMonthValue = 12;
+            $this->currYear -= 1;
         } else if ($newSelectedMonthValue === 13) {
             $newSelectedMonthValue = 1;
+            $this->currYear += 1;
         }
 
         $this->selectedMonth = $newSelectedMonthValue;
