@@ -10,11 +10,10 @@
     @endif
   </head>
   <body>
-    <div>
-      <div class="bg-gray-200 p-2">
+    <div class="flex">
+      <div class="p-2">
         <livewire:custom-calendar />
       </div>
-        {{-- <livewire:appointment /> --}}
     </div>
   </body>
 </html>

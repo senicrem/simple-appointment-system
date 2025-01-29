@@ -12,11 +12,8 @@ class CustomCalendar extends Component
     public string $currYear;
     public string $selectedMonth;
     public array $calendatDateMatrix;
-    public string $dateNow;
     
     public function mount () {
-        $this->dateNow = Carbon::now()->format('Y-d-m');
-
         $this->selectedMonth = Carbon::now()->format('m');
         $this->currDay = Carbon::now()->format('d');
         $this->currFullDay = Carbon::now()->format('l');
@@ -24,21 +21,8 @@ class CustomCalendar extends Component
         $this->setCalendarDateMatrix();
     }
 
-    public function setCalendarDateMatrix () {
-        $startOfMonth = Carbon::create(
-            $this->currYear,
-            $this->selectedMonth,
-            $this->currDay
-        )->startOfMonth();
-        
-        $endOfMonth = Carbon::create(
-            $this->currYear,
-            $this->selectedMonth,
-            $this->currDay
-        )->endOfMonth();
-
-        $matrix = [];
-        $fulldayDict = [
+    public function getFullDayIndex (string $fullday) {
+        $fullDayArray = [
             [ 'fday' => 'Sunday' ],
             [ 'fday' => 'Monday' ],
             [ 'fday' => 'Tuesday' ],
@@ -48,33 +32,45 @@ class CustomCalendar extends Component
             [ 'fday' => 'Saturday' ],
         ];
 
-        $fdayIdx = array_filter($fulldayDict, function($arr) use ($startOfMonth) {
-            return $arr['fday'] == $startOfMonth->dayName;
+        $result = array_filter($fullDayArray, function($arr) use ($fullday) {
+            return $arr['fday'] == $fullday;
         });
 
-        if (!is_null($fdayIdx)) {
-            if (key($fdayIdx) != 0) {
+        if (is_null($result)) return null;
+        return key($result);
+    }
 
-                for ($i=0; $i < key($fdayIdx) ; $i++) { 
+    public function setCalendarDateMatrix () {
+        $dateNow = Carbon::now();
+        $startOfMonth = Carbon::create($this->currYear, $this->selectedMonth, $this->currDay)->startOfMonth();
+        $endOfMonth = Carbon::create($this->currYear, $this->selectedMonth, $this->currDay)->endOfMonth();
+        $matrix = [];
+        $fullDayIndex = $this->getFullDayIndex($startOfMonth->dayName);
+
+        // add null before the start day
+        if (!is_null($fullDayIndex)) {
+            if ($fullDayIndex != 0) {
+
+                for ($i=0; $i < $fullDayIndex ; $i++) { 
                     array_push($matrix, null);
                 }
             }
         } 
         
+        // add to matrix
         while ($startOfMonth <= $endOfMonth) {
+            $fullDate = Carbon::create($this->currYear, $this->selectedMonth, $startOfMonth->day);
+
             array_push($matrix, [
                 'day' => $startOfMonth->day,
-                'full_date' =>  Carbon::create(
-                    $this->currYear,
-                    $this->selectedMonth,
-                    $startOfMonth->day,
-                )->format('Y-d-m')
+                'is_the_current_day' => $fullDate->isSameDay($dateNow),
+                'is_active_day' => $fullDate->isFuture($dateNow)
             ]);
 
-            //increment
+            // increment
             $startOfMonth->addDay();
         }
-        
+
         $this->calendatDateMatrix = $matrix;
     }
 
@@ -83,17 +79,15 @@ class CustomCalendar extends Component
 
         if ($newSelectedMonthValue === 0) {
             $newSelectedMonthValue = 12;
+            $this->currYear -= 1;
         } else if ($newSelectedMonthValue === 13) {
             $newSelectedMonthValue = 1;
+            $this->currYear += 1;
         }
 
         $this->selectedMonth = $newSelectedMonthValue;
         $this->setCalendarDateMatrix();
     }
-
-    public function changeDate () {}
-
-    public function changeYear () {}
 
     public function render() {
         return view('livewire.custom-calendar');
