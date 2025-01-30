@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use Carbon\Carbon;
+use App\Models\Appointment;
 
 class CustomCalendar extends Component
 {
@@ -14,6 +15,7 @@ class CustomCalendar extends Component
     public array $calendatDateMatrix;
     
     public function mount () {
+        // dd(Appointment::all());
         $this->selectedMonth = Carbon::now()->format('m');
         $this->currDay = Carbon::now()->format('d');
         $this->currFullDay = Carbon::now()->format('l');
