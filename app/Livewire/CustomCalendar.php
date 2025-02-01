@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use Carbon\Carbon;
 use App\Models\Appointment;
+use Illuminate\Support\Facades\Log;
 
 class CustomCalendar extends Component
 {
@@ -13,14 +14,20 @@ class CustomCalendar extends Component
     public string $currYear;
     public string $selectedMonth;
     public array $calendatDateMatrix;
+    public string $selectedDate;
+    public object $appointments;
     
     public function mount () {
+        $dateNow = Carbon::now();
         // dd(Appointment::all());
-        $this->selectedMonth = Carbon::now()->format('m');
-        $this->currDay = Carbon::now()->format('d');
-        $this->currFullDay = Carbon::now()->format('l');
-        $this->currYear = Carbon::now()->year;
+        $this->selectedMonth = $dateNow->format('m');
+        $this->currDay = $dateNow->format('d');
+        $this->currFullDay = $dateNow->format('l');
+        $this->currYear = $dateNow->year;
+        $this->selectedDate = $dateNow->toDateString();
+
         $this->setCalendarDateMatrix();
+        $this->getAppointmentsByDate($dateNow->toDateString());
     }
 
     public function getFullDayIndex (string $fullday) {
@@ -44,10 +51,14 @@ class CustomCalendar extends Component
 
     public function setCalendarDateMatrix () {
         $dateNow = Carbon::now();
-        $startOfMonth = Carbon::create($this->currYear, $this->selectedMonth, $this->currDay)->startOfMonth();
-        $endOfMonth = Carbon::create($this->currYear, $this->selectedMonth, $this->currDay)->endOfMonth();
+        $startOfMonth = Carbon::create($this->currYear, $this->selectedMonth, $this->currDay, 0, 0, 0)->startOfMonth();
+        $endOfMonth = Carbon::create($this->currYear, $this->selectedMonth, $this->currDay, 0, 0, 0)->endOfMonth();
         $matrix = [];
         $fullDayIndex = $this->getFullDayIndex($startOfMonth->dayName);
+        Log::info($this->selectedMonth);
+        Log::info($startOfMonth->toDateString());
+        Log::info($endOfMonth->toDateString());
+        // endOfMonthLog::info($startOfMonth->toDateString());
 
         // add null before the start day
         if (!is_null($fullDayIndex)) {
@@ -65,15 +76,27 @@ class CustomCalendar extends Component
 
             array_push($matrix, [
                 'day' => $startOfMonth->day,
+                'date' => $fullDate->toDateString(),
                 'is_the_current_day' => $fullDate->isSameDay($dateNow),
-                'is_active_day' => $fullDate->isFuture($dateNow)
+                'is_active_day' => $fullDate->isFuture($dateNow),
+                'is_weekend' => $fullDate->isWeekend(),
             ]);
 
             // increment
-            $startOfMonth->addDay();
+            if ($startOfMonth != $endOfMonth) {
+                $startOfMonth->addDay();
+            }
         }
 
         $this->calendatDateMatrix = $matrix;
+    }
+
+    public function getAppointmentsByDate(string $date) {
+        $this->appointments = Appointment::where('scheduled_date', $date)->get();
+    }
+
+    public function setSelectedDate (string $date) {
+        $this->selectedDate = $date;  
     }
 
     public function changeMonth (string $direction) {
@@ -86,6 +109,7 @@ class CustomCalendar extends Component
             $newSelectedMonthValue = 1;
             $this->currYear += 1;
         }
+        Log::info("changeMonth funcs {$newSelectedMonthValue}");
 
         $this->selectedMonth = $newSelectedMonthValue;
         $this->setCalendarDateMatrix();
