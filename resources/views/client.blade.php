@@ -1,6 +1,8 @@
 <!doctype html>
 <html class=h-full>
   <head>
+    <title>Appointment System</title>
+    <link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico">
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
