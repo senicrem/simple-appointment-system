@@ -51,14 +51,10 @@ class CustomCalendar extends Component
 
     public function setCalendarDateMatrix () {
         $dateNow = Carbon::now();
-        $startOfMonth = Carbon::create($this->currYear, $this->selectedMonth, $this->currDay, 0, 0, 0)->startOfMonth();
-        $endOfMonth = Carbon::create($this->currYear, $this->selectedMonth, $this->currDay, 0, 0, 0)->endOfMonth();
+        $startOfMonth = Carbon::create($this->currYear, $this->selectedMonth, 1)->startOfMonth();
+        $endOfMonth = Carbon::create($this->currYear, $this->selectedMonth, $startOfMonth->day)->endOfMonth();
         $matrix = [];
         $fullDayIndex = $this->getFullDayIndex($startOfMonth->dayName);
-        Log::info($this->selectedMonth);
-        Log::info($startOfMonth->toDateString());
-        Log::info($endOfMonth->toDateString());
-        // endOfMonthLog::info($startOfMonth->toDateString());
 
         // add null before the start day
         if (!is_null($fullDayIndex)) {
@@ -83,9 +79,7 @@ class CustomCalendar extends Component
             ]);
 
             // increment
-            if ($startOfMonth != $endOfMonth) {
-                $startOfMonth->addDay();
-            }
+            $startOfMonth->addDay();
         }
 
         $this->calendatDateMatrix = $matrix;
@@ -109,7 +103,6 @@ class CustomCalendar extends Component
             $newSelectedMonthValue = 1;
             $this->currYear += 1;
         }
-        Log::info("changeMonth funcs {$newSelectedMonthValue}");
 
         $this->selectedMonth = $newSelectedMonthValue;
         $this->setCalendarDateMatrix();
