@@ -78,7 +78,6 @@ class CustomCalendar extends Component
                 'is_weekend' => $fullDate->isWeekend(),
             ]);
 
-            // increment
             $startOfMonth->addDay();
         }
 
