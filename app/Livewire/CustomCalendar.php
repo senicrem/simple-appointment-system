@@ -107,6 +107,10 @@ class CustomCalendar extends Component
         $this->setCalendarDateMatrix();
     }
 
+    public function openModal () {
+        $this->dispatch('open-modal', value: true);
+    }
+
     public function render() {
         return view('livewire.custom-calendar');
     }

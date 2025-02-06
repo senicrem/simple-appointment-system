@@ -48,23 +48,33 @@
             @endforeach
         </div>
     </div>
-    <div class="w-72 bg-gray-700 px-7">
-        <div class="pt-4 pb-2">
-            <p class="text-xl text-center uppercase text-orange-500">Appointments</p>
-            <p class="text-center text-sm uppercase font-sans text-slate-300">
-                {{ (new DateTime($selectedDate))->format('F j, Y') }}
-            </p>
-        </div>
+    <div class="w-72 bg-gray-700 px-7 block">
+        <div>
+            <div class="pt-4 pb-2">
+                <p class="text-xl text-center uppercase text-orange-500">Appointments</p>
+                <p class="text-center text-sm uppercase font-sans text-slate-300">
+                    {{ (new DateTime($selectedDate))->format('F j, Y') }}
+                </p>
+            </div>
+    
             <div class="flex justify-center m-0 p-0">
                 <hr class="w-20 bg-gray-500 h-1 text-gray-500">
             </div>
-        <div class="mt-7 space-y-2">
-            <div class="text-cyan-400 text-bold border-b-2 py-1 cursor-pointer">
+        </div>
+
+        <div class="mt-7 space-y-2 max-h-[22rem]">
+            <div class="text-cyan-400 text-bold border-b-2 py-1">
                 <p class="uppercase">Sleep</p>
             </div>
-            <div class="text-cyan-400 text-bold border-b-2 py-1 cursor-pointer">
+            <div class="text-cyan-400 text-bold border-b-2 py-1">
                 <p class="uppercase">eat</p>
             </div>
+            
         </div>
+
+        <button wire:click="openModal" class="text-white uppercase border-2 w-full my-2 cursor-pointer hover:bg-orange-500 transition-all delay-100">
+            Set Appointment
+        </button>
     </div>
+    <livewire:modal />
 </div>
