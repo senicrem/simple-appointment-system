@@ -108,7 +108,13 @@ class CustomCalendar extends Component
     }
 
     public function openModal () {
-        $this->dispatch('open-modal', value: true);
+        // named argument sample
+        // create(name: 'value', age: 'value');
+
+        $this->dispatch('open-modal',
+            value: true, 
+            date: $this->selectedDate
+        );
     }
 
     public function render() {

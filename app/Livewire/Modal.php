@@ -8,6 +8,7 @@ use Livewire\Attributes\On;
 class Modal extends Component
 {
     public bool $isOpen = false;
+    public string $date;
 
     // Listen for the 'openModal' event with the parameter
     protected $listeners = [
@@ -15,7 +16,14 @@ class Modal extends Component
     ];
 
     #[On('open-modal')] 
-    public function modalSwitch (bool $value = false) {
+    public function modalSwitch (bool $value = false, string $date = "") {
+        if ($value === false) {
+            $this->$date = '';
+            $this->isOpen = false;
+            return;
+        }
+
+        $this->date = $date;
         $this->isOpen  = $value;
     }
 
