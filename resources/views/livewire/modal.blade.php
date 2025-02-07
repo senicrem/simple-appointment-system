@@ -13,6 +13,7 @@
         <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
         <input type="text" id="name" class="mt-1 p-2 w-full border border-gray-300 rounded-lg" placeholder="Enter your name">
       </div>
+
       <div class="mb-4">
         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
         <input type="email" id="email" class="mt-1 p-2 w-full border border-gray-300 rounded-lg" placeholder="Enter your email">
