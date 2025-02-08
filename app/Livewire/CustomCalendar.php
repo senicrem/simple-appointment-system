@@ -75,7 +75,7 @@ class CustomCalendar extends Component
                 'date' => $fullDate->toDateString(),
                 'is_the_current_day' => $fullDate->isSameDay($dateNow),
                 'is_active_day' => $fullDate->isFuture($dateNow),
-                'is_weekend' => $fullDate->isWeekend(),
+                'is_weekend' => $fullDate->isWeekend()
             ]);
 
             $startOfMonth->addDay();
@@ -89,7 +89,8 @@ class CustomCalendar extends Component
     }
 
     public function setSelectedDate (string $date) {
-        $this->selectedDate = $date;  
+        $this->selectedDate = $date;
+        $this->getAppointmentsByDate($date);
     }
 
     public function changeMonth (string $direction) {

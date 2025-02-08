@@ -63,13 +63,11 @@
         </div>
 
         <div class="mt-7 space-y-2 max-h-[22rem]">
-            <div class="text-cyan-400 text-bold border-b-2 py-1">
-                <p class="uppercase">Sleep</p>
-            </div>
-            <div class="text-cyan-400 text-bold border-b-2 py-1">
-                <p class="uppercase">eat</p>
-            </div>
-            
+            @foreach($appointments as $item)
+                <div class="text-cyan-400 text-bold border-b-2 py-1">
+                    <p class="uppercase">{{$item['name']}}</p>
+                </div>
+            @endforeach
         </div>
 
         <button wire:click="openModal" class="text-white uppercase border-2 w-full my-2 cursor-pointer hover:bg-orange-500 transition-all delay-100">
