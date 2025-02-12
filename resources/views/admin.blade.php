@@ -11,9 +11,7 @@
       <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
     @endif
   </head>
-  <body class="bg-linear-to-t from-sky-500 to-indigo-500">
-      <div class="flex mt-32 justify-center">
-        <livewire:admin-page />
-      </div>
+  <body>
+    <livewire:admin-page />
   </body>
 </html>
