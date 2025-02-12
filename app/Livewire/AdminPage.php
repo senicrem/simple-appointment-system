@@ -7,10 +7,10 @@ use App\Models\Appointment;
 
 class AdminPage extends Component
 {
+    public array $appointments = [];
 
     public function mount () {
-        $appointments =  Appointment::forMonth(2)->groupBy('scheduled_date')->toArray();
-        // dd($appointments);
+        $this->appointments =  Appointment::forMonth(2)->groupBy('scheduled_date')->toArray();
     }
 
     

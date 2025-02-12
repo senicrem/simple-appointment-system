@@ -1,5 +1,5 @@
 <!doctype html>
-<html class=h-full>
+<html>
   <head>
     <title>Appointment System | Admin</title>
     <link rel="icon" type="image/x-icon" href="/favicon_io/favicon.ico">
