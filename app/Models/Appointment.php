@@ -12,6 +12,7 @@ class Appointment extends Model
         "concern",
         "scheduled_date",
         "scheduled_time",
+        "status",
     ];
 
     protected $hidden = [
