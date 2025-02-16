@@ -1,8 +1,27 @@
 <div class="h-screen w-full bg-gray-100 flex justify-center items-center">
     <div class="font-mono bg-slate-300 p-4 w-[55rem]">
-        <p class="text-4xl uppercase font-bold">Sessions</p>
+        <div class="flex justify-between items-center mb-2">
+            <p class="text-4xl uppercase font-bold">Sessions</p>
+            <div class="text-xl bg-white px-2 py-1">
+                <span>Month</span>
+                <select wire:change="changeMonth($event.target.value)">
+                    @for ($i = 1; $i <= 12; $i++)
+                        <option 
+                            value="{{ $i }}"
+                            {{ $i == $month ? 'selected' : '' }}
+                        >{{ $i }}</option>
+                    @endfor
+                </select>
+            </div>
+        </div>
         <hr>
         <div class="max-h-[500px] overflow-y-auto">
+            @if(empty($appointments))
+                <div class="w-full text-center">
+                    No Session/s for this month. {{ $month }}
+                </div>
+            @endif
+
             @foreach($appointments as $appointment)
                 @foreach($appointment as $p)
                 <div class="group">
