@@ -19,7 +19,9 @@ class Appointment extends Model
         "created_at", "updated_at"
     ];
 
-    public static function forMonth(int $month) {
-        return self::whereMonth('scheduled_date', $month)->get();
+    public static function getByMonthAndYear(int $month, int $year) {
+        return self::whereMonth('scheduled_date', $month)
+        ->whereYear('scheduled_date', $year)
+        ->get();
     }
 }

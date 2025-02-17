@@ -13,12 +13,23 @@
                     @endfor
                 </select>
             </div>
+            <div class="text-xl bg-white px-2 py-1">
+                <span>Year</span>
+                <select wire:change="changeYear($event.target.value)">
+                    @for ($j = 2024; $j <= 2030; $j++)
+                    <option 
+                    value="{{ $j }}"
+                    {{ $j == $year ? 'selected' : '' }}
+                    >{{ $j }}</option>
+                    @endfor
+                </select>
+            </div>
         </div>
         <hr>
         <div class="max-h-[500px] overflow-y-auto">
             @if(empty($appointments))
                 <div class="w-full text-center">
-                    No Session/s for this month. {{ $month }}
+                    No Session/s for this month. ({{ $month }}/{{ $year}})
                 </div>
             @endif
 
