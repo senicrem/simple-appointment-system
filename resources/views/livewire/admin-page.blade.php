@@ -2,27 +2,29 @@
     <div class="font-mono bg-slate-300 p-4 w-[55rem]">
         <div class="flex justify-between items-center mb-2">
             <p class="text-4xl uppercase font-bold">Sessions</p>
-            <div class="text-xl bg-white px-2 py-1">
-                <span>Month</span>
-                <select wire:change="changeMonth($event.target.value)">
-                    @for ($i = 1; $i <= 12; $i++)
+            <div class="flex gap-2">
+                <div class="text-xl bg-white px-2 py-1">
+                    <span>Month</span>
+                    <select wire:change="changeMonth($event.target.value)">
+                        @for ($i = 1; $i <= 12; $i++)
+                            <option 
+                                value="{{ $i }}"
+                                {{ $i == $month ? 'selected' : '' }}
+                            >{{ $i }}</option>
+                        @endfor
+                    </select>
+                </div>
+                <div class="text-xl bg-white px-2 py-1">
+                    <span>Year</span>
+                    <select wire:change="changeYear($event.target.value)">
+                        @for ($j = 2024; $j <= 2030; $j++)
                         <option 
-                            value="{{ $i }}"
-                            {{ $i == $month ? 'selected' : '' }}
-                        >{{ $i }}</option>
-                    @endfor
-                </select>
-            </div>
-            <div class="text-xl bg-white px-2 py-1">
-                <span>Year</span>
-                <select wire:change="changeYear($event.target.value)">
-                    @for ($j = 2024; $j <= 2030; $j++)
-                    <option 
-                    value="{{ $j }}"
-                    {{ $j == $year ? 'selected' : '' }}
-                    >{{ $j }}</option>
-                    @endfor
-                </select>
+                        value="{{ $j }}"
+                        {{ $j == $year ? 'selected' : '' }}
+                        >{{ $j }}</option>
+                        @endfor
+                    </select>
+                </div>
             </div>
         </div>
         <hr>
@@ -38,16 +40,28 @@
                 <div class="group">
                     <div class="text-sm p-2 border-b-1 border-slate-800 group-hover:bg-slate-200 transition-all delay-100">
                         <div class="flex justify-between">
-                            <p class="text-lg">{{ $p['name'] }}</p>
+                            <div>
+                                <p class="text-lg">{{ $p['name'] }}</p>
+                            </div>
                             <div class="text-lg">{{ $p['scheduled_date'] }}</div>
                         </div>
                         <div class="flex justify-between">
                             <p>{{$p['concern']}}</p>
-                            <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity delay-100">
-                                <button class="bg-green-700 px-3 py-1 text-white cursor-pointer hover:bg-green-600">Done</button>
-                                <button class="bg-red-700 px-3 py-1 text-white cursor-pointer hover:bg-red-600">Cancel</button>
+                            @if ($p['status'] === 'completed')
+                            <div>
+                                <p class="bg-green-700 px-3 py-1 text-white">Completed</p>
                             </div>
-                        </div>
+                            @elseif ($p['status'] === 'cancel')
+                            <div>
+                                <p class="bg-red-700 px-3 py-1 text-white">Cancelled</p>
+                            </div>
+                            @else
+                            <div class="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity delay-100">
+                                <button wire:click="onCompleted({{ $p['id'] }})" class="border-2 border-green-700 px-3 py-1 cursor-pointer hover:text-white hover:bg-green-700">Completed</button>
+                                <button wire:click="onCancelled({{ $p['id'] }})" class="border-2 border-red-700 px-3 py-1 cursor-pointer hover:text-white hover:bg-red-700">Cancel</button>
+                            </div>
+                            @endif
+                            </div>
                     </div>
                 </div>
                 @endforeach

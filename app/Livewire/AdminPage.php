@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Appointment;
 use Carbon\Carbon;
+use App\Types\Status;
 
 class AdminPage extends Component
 {
@@ -43,7 +44,25 @@ class AdminPage extends Component
         
         $this->year = $year;
         $this->setSessions($month, $year);
-    }   
+    } 
+    
+    public function onCompleted (int $id) {
+        $appointment = Appointment::find($id);
+        $appointment->status = Status::Completed->value;
+        
+        if($appointment->save()) {
+            $this->setSessions($this->month, $this->year);
+        }
+    }
+
+    public function onCancelled (int $id) {
+        $appointment = Appointment::find($id);
+        $appointment->status = Status::Cancel->value;
+        
+        if($appointment->save()) {
+            $this->setSessions($this->month, $this->year);
+        }
+    }
     
     public function render()
     {
